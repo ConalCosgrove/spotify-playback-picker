@@ -3,7 +3,7 @@ document.getElementById('myH1').innerHTML = 'My Spotify Selector';
 let params = (new URL(document.location)).searchParams;
 let access_token = params.get('access_token');
 const refresh_token = params.get('refresh_token');
-
+let last = 0;
 
 function buildDevices(data) {
   document.getElementById('devices').innerHTML = '';
@@ -24,26 +24,55 @@ function buildDevices(data) {
   }
 }
 
+function calculateWidth (songData) {
+  const currentTime = songData.progress_ms;
+  last = currentTime;
+  const length = songData.item.duration_ms;
+
+  return Math.floor( 100 * (currentTime / length) );
+}
+
 function buildNowPlaying(data) {
   let nowPlayingHolder = document.getElementById('nowPlaying');
   nowPlayingHolder.innerHTML = '';
+  const artHolder = document.createElement('div');
+  artHolder.id = 'artworkHolder';
   const artwork = document.createElement("img");
+  const timeDisplay = document.createElement("div");
+  timeDisplay.id = 'time';
+  timeDisplay.style.width = `${calculateWidth(data)}%`;
+  timeDisplay.style.backgroundColor = '#1DB954';
   const title = document.createElement('h3');
   title.innerHTML = data.item.name;
   const artist = document.createElement('h4');
   artist.innerHTML = data.item.artists[0].name + ' - ' + data.item.album.name;
   artwork.src = data.item.album.images[1].url;
   artwork.id = 'artwork';
-  nowPlayingHolder.appendChild(artwork);
+  artHolder.appendChild(artwork);
+  artHolder.appendChild(timeDisplay);
+  nowPlayingHolder.appendChild(artHolder);
   nowPlayingHolder.appendChild(title);
   nowPlayingHolder.appendChild(artist)
 }
+
+function setTime(data) {
+  if (data.progress_ms < last) {
+    last = data.progress_ms;
+    getNowPlaying();
+  } else {
+    let time = document.getElementById('time');
+    const ratio = calculateWidth(data);
+    time.style.width = `${ratio}%`;
+  }
+}
+
 
 // Set up our HTTP request
 var xhr = new XMLHttpRequest();
 var refreshXhr = new XMLHttpRequest();
 var changeDeviceXhr = new XMLHttpRequest();
 var getNowPlayingXhr = new XMLHttpRequest();
+var getTimeXhr = new XMLHttpRequest();
 
 // Setup our listener to process completed requests
 xhr.onload = function () {
@@ -92,6 +121,12 @@ if (getNowPlayingXhr.status >= 200 && getNowPlayingXhr.status < 300) {
   // This will run when it's not
 }
 
+getTimeXhr.onload = function () {
+  if (getTimeXhr.status >= 200 && getTimeXhr.status < 300) {
+    setTime(JSON.parse(getTimeXhr.response));
+  }
+}
+
 // This will run either way
 // All three of these are optional, depending on what you're trying to do
 }
@@ -118,6 +153,14 @@ function getNowPlaying() {
   getNowPlayingXhr.send();
 }
 
+function getTime() {
+  getTimeXhr.open('GET', 'https://api.spotify.com/v1/me/player',);
+  getTimeXhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+  getTimeXhr.send();
+}
+
 getDevices()
 
 getNowPlaying();
+
+const interval = setInterval(getTime, 1000);

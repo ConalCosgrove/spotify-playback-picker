@@ -32,3 +32,12 @@
   padding:5px;
   width: fit-content;
 }
+
+#artworkHolder {
+  display: flex;
+  flex-direction: column;
+}
+
+#time {
+  height: 5px;
+}
