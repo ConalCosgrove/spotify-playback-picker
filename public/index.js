@@ -1,7 +1,6 @@
-console.log('loaded');
+
 document.getElementById('myH1').innerHTML = 'My Spotify Selector';
 let params = (new URL(document.location)).searchParams;
-console.log(params.get('access_token'));
 let access_token = params.get('access_token');
 const refresh_token = params.get('refresh_token');
 
@@ -16,7 +15,6 @@ function buildDevices(data) {
     const deviceName = data[i].name;
     newDeviceDiv.onclick = function () {
       changeDevice(deviceId);
-      console.log('Changing to', deviceName);
     }
     newDeviceText.id = 'deviceText';
     newDeviceText.innerHTML = data[i].name;
@@ -24,13 +22,28 @@ function buildDevices(data) {
     document.getElementById('devices').appendChild(newDeviceDiv);
     
   }
+}
 
+function buildNowPlaying(data) {
+  let nowPlayingHolder = document.getElementById('nowPlaying');
+  nowPlayingHolder.innerHTML = '';
+  const artwork = document.createElement("img");
+  const title = document.createElement('h3');
+  title.innerHTML = data.item.name;
+  const artist = document.createElement('h4');
+  artist.innerHTML = data.item.artists[0].name + ' - ' + data.item.album.name;
+  artwork.src = data.item.album.images[1].url;
+  artwork.id = 'artwork';
+  nowPlayingHolder.appendChild(artwork);
+  nowPlayingHolder.appendChild(title);
+  nowPlayingHolder.appendChild(artist)
 }
 
 // Set up our HTTP request
 var xhr = new XMLHttpRequest();
 var refreshXhr = new XMLHttpRequest();
 var changeDeviceXhr = new XMLHttpRequest();
+var getNowPlayingXhr = new XMLHttpRequest();
 
 // Setup our listener to process completed requests
 xhr.onload = function () {
@@ -38,23 +51,18 @@ xhr.onload = function () {
 	// Process our return data
 	if (xhr.status >= 200 && xhr.status < 300) {
 		// This will run when the request is successful
-    console.log('success!', JSON.parse(xhr.response));
     buildDevices(JSON.parse(xhr.response).devices);
 	} else {
 		// This will run when it's not
-    console.log('The request failed!', xhr);
     refreshToken();
 	}
 
 	// This will run either way
 	// All three of these are optional, depending on what you're trying to do
-	console.log('This always runs...');
 };
 
 refreshXhr.onload = function () {
   if (refreshXhr.status >= 200 && refreshXhr.status < 300) {
-    console.log('refreshed access token');
-    console.log(JSON.parse(refreshXhr.response));
     access_token = JSON.parse(refreshXhr.response).access_token;
     getDevices();
   } else {
@@ -66,16 +74,26 @@ changeDeviceXhr.onload = function () {
   	// Process our return data
 	if (changeDeviceXhr.status >= 200 && changeDeviceXhr.status < 300) {
 		// This will run when the request is successful
-    console.log('success!', JSON.parse(changeDeviceXhr.response));
     getDevices();
 	} else {
 		// This will run when it's not
-    console.log('The request failed!', changeDeviceXhr);
 	}
 
 	// This will run either way
 	// All three of these are optional, depending on what you're trying to do
-	console.log('This always runs...');
+}
+
+getNowPlayingXhr.onload = function () {
+  // Process our return data
+if (getNowPlayingXhr.status >= 200 && getNowPlayingXhr.status < 300) {
+  // This will run when the request is successful
+  buildNowPlaying(JSON.parse(getNowPlayingXhr.response))
+} else {
+  // This will run when it's not
+}
+
+// This will run either way
+// All three of these are optional, depending on what you're trying to do
 }
 
 function getDevices() {
@@ -94,4 +112,12 @@ function changeDevice(id) {
   changeDeviceXhr.send();
 }
 
+function getNowPlaying() {
+  getNowPlayingXhr.open('GET', 'https://api.spotify.com/v1/me/player',);
+  getNowPlayingXhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+  getNowPlayingXhr.send();
+}
+
 getDevices()
+
+getNowPlaying();

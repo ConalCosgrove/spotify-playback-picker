@@ -12,3 +12,14 @@
   padding: 5px;
   background-color: rgb(255, 88, 88);
 }
+
+#artwork {
+  max-width: fit-content;
+}
+
+#nowPlaying {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding:10px;
+}
