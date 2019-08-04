@@ -178,4 +178,4 @@ app.get('/changeDevice', async (req, res) => {
 });
 
 console.log('Listening on 8000');
-app.listen(8000, '0.0.0.0');
+app.listen(process.env.PORT || 8080);
