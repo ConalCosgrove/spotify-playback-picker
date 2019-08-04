@@ -23,3 +23,12 @@
   align-items: center;
   padding:10px;
 }
+
+#login {
+  background-color: black;
+  border-radius: 5px;
+  color: white;
+  margin: 5px;
+  padding:5px;
+  width: fit-content;
+}

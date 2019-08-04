@@ -148,11 +148,15 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/pages/index.html');
+});
+
 app.get('/profile', async (req, res) => {
   const { access_token, refresh_token } = req.query;
   const authOptions = buildAuthOptions('https://api.spotify.com/v1/me/player/devices', access_token);
   try {
-    res.sendFile(__dirname + '/public/pages/index.html');
+    res.sendFile(__dirname + '/public/pages/profile.html');
   } catch(err){
     console.log('errror blier', err)
     res.send(err);

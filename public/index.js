@@ -74,7 +74,7 @@ changeDeviceXhr.onload = function () {
   	// Process our return data
 	if (changeDeviceXhr.status >= 200 && changeDeviceXhr.status < 300) {
 		// This will run when the request is successful
-    getDevices();
+    setTimeout(getDevices(),1000);
 	} else {
 		// This will run when it's not
 	}
