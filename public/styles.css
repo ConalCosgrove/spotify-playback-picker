@@ -1,0 +1,14 @@
+#deviceHolder {
+  padding: 5px;
+  background-color: aquamarine;
+}
+
+#devices {
+  display: flex;
+  flex-direction: column;
+}
+
+#deviceHolderActive {
+  padding: 5px;
+  background-color: rgb(255, 88, 88);
+}
