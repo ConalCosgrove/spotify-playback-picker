@@ -2,7 +2,37 @@
 document.getElementById('myH1').innerHTML = 'My Spotify Selector';
 let params = (new URL(document.location)).searchParams;
 let access_token = params.get('access_token');
-const refresh_token = params.get('refresh_token');
+let refresh_token = params.get('refresh_token');
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+if (access_token) {
+  document.cookie = `access_token=${access_token}`;
+} else {
+  access_token = getCookie('access_token');
+}
+
+if (refresh_token) {
+  document.cookie = `refresh_token=${refresh_token}`;
+} else {
+  refresh_token = getCookie('refresh_token');
+}
+
+window.history.pushState("object or string", "Title", "/"+window.location.href.substring(window.location.href.lastIndexOf('/') + 1).split("?")[0]);
 let last = 0;
 
 function buildDevices(data) {
@@ -12,7 +42,6 @@ function buildDevices(data) {
     let newDeviceText = document.createElement("p");
     newDeviceDiv.id = data[i].is_active ? 'deviceHolderActive': 'deviceHolder';
     const deviceId = data[i].id;
-    const deviceName = data[i].name;
     newDeviceDiv.onclick = function () {
       changeDevice(deviceId);
     }
@@ -41,7 +70,6 @@ function buildNowPlaying(data) {
   const timeDisplay = document.createElement("div");
   timeDisplay.id = 'time';
   timeDisplay.style.width = `${calculateWidth(data)}%`;
-  timeDisplay.style.backgroundColor = '#1DB954';
   const title = document.createElement('h3');
   title.innerHTML = data.item.name;
   const artist = document.createElement('h4');
@@ -103,7 +131,7 @@ changeDeviceXhr.onload = function () {
   	// Process our return data
 	if (changeDeviceXhr.status >= 200 && changeDeviceXhr.status < 300) {
 		// This will run when the request is successful
-    setTimeout(getDevices(),1000);
+    setTimeout(getDevices,500);
 	} else {
 		// This will run when it's not
 	}

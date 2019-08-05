@@ -1,6 +1,19 @@
 #deviceHolder {
   padding: 5px;
-  background-color: aquamarine;
+  background-color: #333;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#deviceHolderActive {
+  padding: 5px;
+  background-color: #1DB954;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  cursor: pointer;
 }
 
 #devices {
@@ -8,10 +21,6 @@
   flex-direction: column;
 }
 
-#deviceHolderActive {
-  padding: 5px;
-  background-color: rgb(255, 88, 88);
-}
 
 #artwork {
   max-width: fit-content;
@@ -36,8 +45,23 @@
 #artworkHolder {
   display: flex;
   flex-direction: column;
+  padding: 5px;
+  background-color: white;
 }
 
 #time {
   height: 5px;
+  background-color: #1DB954;
+}
+
+#profile {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  background-color: #000000;
+  color:white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
