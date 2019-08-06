@@ -1,5 +1,4 @@
 
-document.getElementById('myH1').innerHTML = 'My Spotify Selector';
 let params = (new URL(document.location)).searchParams;
 let access_token = params.get('access_token');
 let refresh_token = params.get('refresh_token');
