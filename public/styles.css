@@ -18,7 +18,7 @@
 
 #devices {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 
@@ -73,7 +73,8 @@ body {
 }
 
 #playPause {
-  visibility: hidden;
+  cursor: pointer;
+  margin:5px;
   color: #000000;
   background-color: white;
   width: 50px;
@@ -83,4 +84,36 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+#next {
+  cursor: pointer;
+  margin:5px;
+  color: #000000;
+  background-color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#prev {
+  cursor: pointer;
+  margin:5px;
+  color: #000000;
+  background-color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#controls {
+  display: flex;
 }

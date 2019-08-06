@@ -2,6 +2,7 @@
 let params = (new URL(document.location)).searchParams;
 let access_token = params.get('access_token');
 let refresh_token = params.get('refresh_token');
+let playing = true;
 
 function getCookie(cname) {
   var name = cname + "=";
@@ -50,6 +51,25 @@ function buildDevices(data) {
     document.getElementById('devices').appendChild(newDeviceDiv);
     
   }
+}
+
+function buildControls() {
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const playPause = document.getElementById('playPause');
+  let stateRequest = new XMLHttpRequest();
+  next.onclick = function () {
+    console.log('click')
+    stateRequest.open('POST','https://api.spotify.com/v1/me/player/next');
+    stateRequest.setRequestHeader('Authorization', `Bearer ${access_token}`);
+    stateRequest.send();
+  }
+  prev.onclick = function () {
+    stateRequest.open('POST', 'https://api.spotify.com/v1/me/player/previous');
+    stateRequest.setRequestHeader('Authorization', `Bearer ${access_token}`);
+    stateRequest.send();
+  }
+
 }
 
 function calculateWidth (songData) {
@@ -196,7 +216,7 @@ function getTime() {
 }
 
 getDevices()
-
+buildControls();
 getNowPlaying();
 
 const interval = setInterval(getTime, 1000);
