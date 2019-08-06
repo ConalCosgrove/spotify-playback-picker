@@ -89,6 +89,10 @@ function setTime(data) {
     getNowPlaying();
   } else {
     let time = document.getElementById('time');
+    if (!time) {
+      buildNowPlaying(data);
+      time = document.getElementById('time');
+    }
     const ratio = calculateWidth(data);
     time.style.width = `${ratio}%`;
   }
@@ -134,6 +138,7 @@ changeDeviceXhr.onload = function () {
     setTimeout(getDevices,500);
 	} else {
 		// This will run when it's not
+    refreshToken();
 	}
 
 	// This will run either way
@@ -144,15 +149,19 @@ getNowPlayingXhr.onload = function () {
   // Process our return data
 if (getNowPlayingXhr.status >= 200 && getNowPlayingXhr.status < 300) {
   // This will run when the request is successful
-  buildNowPlaying(JSON.parse(getNowPlayingXhr.response))
+  getNowPlayingXhr.response ? buildNowPlaying(JSON.parse(getNowPlayingXhr.response)) : null
 } else {
   // This will run when it's not
+  refreshToken();
 }
 
 getTimeXhr.onload = function () {
   if (getTimeXhr.status >= 200 && getTimeXhr.status < 300) {
-    setTime(JSON.parse(getTimeXhr.response));
-  }
+    getTimeXhr.response ? setTime(JSON.parse(getTimeXhr.response)) : null;
+  } else {
+		// This will run when it's not
+    refreshToken();
+	}
 }
 
 // This will run either way
