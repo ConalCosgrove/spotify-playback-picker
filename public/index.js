@@ -147,6 +147,7 @@ refreshXhr.onload = function () {
     getDevices();
   } else {
     console.error('could not refresh access token :(');
+    window.location.replace('/login');
   }
 }
 
