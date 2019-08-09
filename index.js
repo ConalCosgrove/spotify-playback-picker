@@ -70,7 +70,6 @@ app.get('/spotify-callback', function(req, res) {
 
   // your application requests refresh and access tokens
   // after checking the state parameter
-  console.log('connect');
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -90,7 +89,7 @@ app.get('/spotify-callback', function(req, res) {
         grant_type: 'authorization_code'
       },
       headers: {
-        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+        'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
       },
       json: true
     };
