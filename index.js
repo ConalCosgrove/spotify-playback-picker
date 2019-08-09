@@ -176,11 +176,10 @@ app.get('/changeDevice', async (req, res) => {
     .send(authOptions.body)
     res.send(changeResponse);
   } catch(error) {
-    console.log(error.response.text);
+    console.log(error.response ? error.response);
     res.status(400).send(error);
   }
 });
 const PORT = process.env.PORT;
 console.log(`Listening on ${PORT}`);
-console.log(process.env.REDIRECT_URI)
 app.listen(process.env.PORT || 8000);
