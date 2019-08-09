@@ -176,7 +176,7 @@ app.get('/changeDevice', async (req, res) => {
     .send(authOptions.body)
     res.send(changeResponse);
   } catch(error) {
-    console.log(error.response ? error.response);
+    console.log(error.response ? error.response : error);
     res.status(400).send(error);
   }
 });
