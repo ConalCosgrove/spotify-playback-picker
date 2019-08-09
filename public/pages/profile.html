@@ -7,16 +7,21 @@
   <title>Player Picker</title>
 </head>
 <body>
-  <div id='profile'>
-    <div id='devices'></div>
-    <div id='nowPlaying'></div>
-    <div id='controls'>
-      <div id='prev'><</div>
-      <div id='playPause'><h3 id='playPauseText'>II</h3></div>
-      <div id='next'>></div>
+  <div id="profile">
+    <div id="playerPanel">
+      <div id="devices"></div>
+      <div id="nowPlaying"></div>
+      <div id="controls">
+        <div id="prev"><</div>
+        <div id="playPause"><h3 id="playPauseText">II</h3></div>
+        <div id="next">></div>
+      </div>
+      <div id="volumeSliderHolder">
+        <input id="volumeSlider" type="range" min="1" max="100">
+      </div>
     </div>
   </div>
-  <script type="text/javascript" src='../index.js'> 
+  <script type="text/javascript" src="../index.js"> 
     
   </script>
 </body>

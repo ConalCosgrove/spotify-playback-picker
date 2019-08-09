@@ -3,6 +3,13 @@ let params = (new URL(document.location)).searchParams;
 let access_token = params.get('access_token');
 let refresh_token = params.get('refresh_token');
 let playing = true;
+// Set up our HTTP request
+var xhr = new XMLHttpRequest();
+var refreshXhr = new XMLHttpRequest();
+var changeDeviceXhr = new XMLHttpRequest();
+var getNowPlayingXhr = new XMLHttpRequest();
+var getTimeXhr = new XMLHttpRequest();
+let stateRequest = new XMLHttpRequest();
 
 function getCookie(cname) {
   var name = cname + "=";
@@ -56,8 +63,8 @@ function buildDevices(data) {
 function buildControls() {
   const prev = document.getElementById('prev');
   const next = document.getElementById('next');
+  const volumeSlider = document.getElementById('volumeSlider');
   const playPause = document.getElementById('playPause');
-  let stateRequest = new XMLHttpRequest();
   next.onclick = function () {
     console.log('click')
     stateRequest.open('POST','https://api.spotify.com/v1/me/player/next');
@@ -69,7 +76,19 @@ function buildControls() {
     stateRequest.setRequestHeader('Authorization', `Bearer ${access_token}`);
     stateRequest.send();
   }
+  volumeSlider.onchange = function (e) {
+    const newVolume = e.target.value;
+    console.log('slider changed');
+    stateRequest.open('PUT',`https://api.spotify.com/v1/me/player/volume?volume_percent=${newVolume}`);
+    stateRequest.setRequestHeader('Authorization', `Bearer ${access_token}`);
+    stateRequest.send();
+  }
 
+}
+
+function clearError() {
+  const errorHolder = document.getElementById('errorTextHolder');
+  errorHolder.parentNode.removeChild(errorHolder);
 }
 
 function calculateWidth (songData) {
@@ -103,6 +122,8 @@ function buildNowPlaying(data) {
 }
 
 function setTime(data) {
+  let volumeSlider = document.getElementById('volumeSlider');
+  volumeSlider.value = data.device.volume_percent;
   if (data.progress_ms < last) {
     last = data.progress_ms;
     getNowPlaying();
@@ -116,14 +137,6 @@ function setTime(data) {
     time.style.width = `${ratio}%`;
   }
 }
-
-
-// Set up our HTTP request
-var xhr = new XMLHttpRequest();
-var refreshXhr = new XMLHttpRequest();
-var changeDeviceXhr = new XMLHttpRequest();
-var getNowPlayingXhr = new XMLHttpRequest();
-var getTimeXhr = new XMLHttpRequest();
 
 // Setup our listener to process completed requests
 xhr.onload = function () {
@@ -171,10 +184,10 @@ if (getNowPlayingXhr.status >= 200 && getNowPlayingXhr.status < 300) {
   // This will run when the request is successful
   getNowPlayingXhr.response ? buildNowPlaying(JSON.parse(getNowPlayingXhr.response)) : null
 } else {
-  // This will run when it's not
-  refreshToken();
+    // This will run when it's not
+    refreshToken();
+  }
 }
-
 getTimeXhr.onload = function () {
   if (getTimeXhr.status >= 200 && getTimeXhr.status < 300) {
     getTimeXhr.response ? setTime(JSON.parse(getTimeXhr.response)) : null;
@@ -184,9 +197,19 @@ getTimeXhr.onload = function () {
 	}
 }
 
-// This will run either way
-// All three of these are optional, depending on what you're trying to do
+stateRequest.onload = function () {
+  if (stateRequest.status === 403) {
+    const sliderHolder = document.getElementById('volumeSliderHolder');
+    const errorBox = document.createElement('div');
+    errorBox.id = 'errorTextHolder';
+    const errorText = document.createElement('p');
+    errorText.innerHTML = JSON.parse(stateRequest.response).error.message;
+    errorBox.appendChild(errorText);
+    sliderHolder.appendChild(errorBox);
+    setTimeout(clearError, 2000);
+  }
 }
+
 
 function getDevices() {
   xhr.open('GET', 'https://api.spotify.com/v1/me/player/devices',);

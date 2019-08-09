@@ -18,6 +18,7 @@
 
 #devices {
   display: flex;
+  justify-content: center;
   flex-direction: row;
 }
 
@@ -53,7 +54,7 @@ box-shadow: -9px 10px 5px -5px rgba(0,0,0,0.75);
 }
 
 #time {
-  height: 5px;
+  height: 10px;
   background-color: #1DB954;
   -webkit-box-shadow: -9px 10px 5px -5px rgba(0,0,0,0.75);
   -moz-box-shadow: -9px 10x 5px -5px rgba(0,0,0,0.75);
@@ -116,4 +117,26 @@ body {
 
 #controls {
   display: flex;
+  justify-content: center;
+}
+#playerPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#volumeSliderHolder {
+  margin-top: 20px;
+  width: auto;
+}
+
+#volumeSlider {
+  -webkit-appearance: none;
+  appearance: none;
+  background:#1DB954;
+  height: 5px;
+  width: -webkit-fill-available;
+}
+
+#errorTextHolder {
+  color: red;
 }

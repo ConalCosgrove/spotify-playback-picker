@@ -180,6 +180,7 @@ app.get('/changeDevice', async (req, res) => {
     res.status(400).send(error);
   }
 });
-
-console.log('Listening on 8000');
-app.listen(process.env.PORT || 8080);
+const PORT = process.env.PORT;
+console.log(`Listening on ${PORT}`);
+console.log(process.env.REDIRECT_URI)
+app.listen(process.env.PORT || 8000);
