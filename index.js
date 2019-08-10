@@ -11,6 +11,9 @@ const redirect_uri = process.env.REDIRECT_URI;
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
 const path = require('path');
+const homeRoute = require('./routes/home.js');
+const profile = require('./routes/profile.js');
+const changeDevice = require('./routes/changeDevice');
 var express = require('express'); // Express web server framework
 var requests = require('superagent');
 var request = require('request'); // "Request" library
@@ -33,15 +36,6 @@ var generateRandomString = function(length) {
   }
   return text;
 };
-
-const buildAuthOptions = (url, access_token) => {
-  return {
-    url,
-    headers: { 'Authorization': `Bearer ${access_token}` },
-    json: true
-  }
-}
-
 var stateKey = 'spotify_auth_state';
 
 var app = express();
@@ -49,6 +43,10 @@ app.use(express.static('public'))
    .use(cors())
    .use(cookieParser());
 
+
+app
+.use('/profile', profile)
+.use('/changeDevice', changeDevice);
 app.get('/login', function(req, res) {
 
   var state = generateRandomString(16);
@@ -147,38 +145,7 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/pages/index.html');
-});
 
-app.get('/profile', async (req, res) => {
-  const { access_token, refresh_token } = req.query;
-  const authOptions = buildAuthOptions('https://api.spotify.com/v1/me/player/devices', access_token);
-  try {
-    res.sendFile(__dirname + '/public/pages/profile.html');
-  } catch(err){
-    console.log('errror blier', err)
-    res.send(err);
-  }
-
-});
-
-app.get('/changeDevice', async (req, res) => {
-  const { access_token, device } = req.query;
-  const authOptions = buildAuthOptions('https://api.spotify.com/v1/me/player', access_token);
-  console.log(`Switching to ${device}`);
-  authOptions.body = {device_ids:[device]};
-  try {
-    const changeResponse = await requests
-    .put(authOptions.url)
-    .set('Authorization', `Bearer ${access_token}`)
-    .send(authOptions.body)
-    res.send(changeResponse);
-  } catch(error) {
-    console.log(error.response ? error.response : error);
-    res.status(400).send(error);
-  }
-});
 const PORT = process.env.PORT;
 console.log(`Listening on ${PORT}`);
 app.listen(process.env.PORT || 8000);
