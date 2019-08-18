@@ -9,17 +9,13 @@ const spotifyCallback = require('./spotify-callback.js');
 const router = express.Router();
 const use = (route) => (req, res) => route(req, res);
 
-
-router.get('/profile', use(profile));
-router.get('/changeDevice', use(changeDevice));
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/../public/pages/index.html'));
 });
-
+router.get('/changeDevice', use(changeDevice));
 router.get('/login', use(login));
-
-router.get('/spotify-callback', use(spotifyCallback));
-
+router.get('/profile', use(profile));
 router.get('/refresh_token', use(refreshAccessToken));
+router.get('/spotify-callback', use(spotifyCallback));
 
 module.exports = router;
