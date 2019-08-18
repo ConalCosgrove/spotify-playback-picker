@@ -188,30 +188,26 @@ refreshXhr.onload = () => {
 
 changeDeviceXhr.onload = () => {
   if (changeDeviceXhr.status >= 200 && changeDeviceXhr.status < 300) {
-    // This will run when the request is successful
     setTimeout(getDevices, 500);
   } else {
-    // This will run when it's not
     refreshAccessToken();
   }
-
-  // This will run either way
-  // All three of these are optional, depending on what you're trying to do
 };
 
 getNowPlayingXhr.onload = () => {
-  // Process our return data
   if (getNowPlayingXhr.status >= 200 && getNowPlayingXhr.status < 300) {
-  // This will run when the request is successful
-    getNowPlayingXhr.response ? buildNowPlaying(JSON.parse(getNowPlayingXhr.response)) : null;
+    if (getNowPlayingXhr.response) {
+      buildNowPlaying(JSON.parse(getNowPlayingXhr.response));
+    }
   } else {
-    // This will run when it's not
     refreshAccessToken();
   }
 };
 getTimeXhr.onload = () => {
   if (getTimeXhr.status >= 200 && getTimeXhr.status < 300) {
-    getTimeXhr.response ? setTime(JSON.parse(getTimeXhr.response)) : null;
+    if (getTimeXhr.response) {
+      setTime(JSON.parse(getTimeXhr.response));
+    }
   } else {
     // This will run when it's not
     refreshAccessToken();
