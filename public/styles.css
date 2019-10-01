@@ -9,7 +9,7 @@
 
 #deviceHolderActive {
   padding: 5px;
-  background-color: #1DB954;
+  background-color: rgb(185, 29, 29);;
   padding-left: 10px;
   padding-right: 10px;
   text-align: center;
@@ -55,7 +55,7 @@ box-shadow: -9px 10px 5px -5px rgba(0,0,0,0.75);
 
 #time {
   height: 10px;
-  background-color: #1DB954;
+  background-color: rgb(185, 29, 29);
   -webkit-box-shadow: -9px 10px 5px -5px rgba(0,0,0,0.75);
   -moz-box-shadow: -9px 10x 5px -5px rgba(0,0,0,0.75);
   box-shadow: -9px 10px 5px -5px rgba(0,0,0,0.75);
@@ -132,7 +132,7 @@ body {
 #volumeSlider {
   -webkit-appearance: none;
   appearance: none;
-  background:#1DB954;
+  background:rgb(185, 29, 29);
   height: 5px;
   width: -webkit-fill-available;
 }
