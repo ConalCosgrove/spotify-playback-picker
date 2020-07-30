@@ -28,17 +28,11 @@ function getCookie(cname) {
 }
 
 async function getShareLink() {
-  const cookie = getCookie('shareUrl');
-  if (cookie) {
-    console.log('cookie!');
-    return cookie;
-  }
   const response = await fetch(`/shareurl?accessToken=${accessToken}&refreshToken=${refreshToken}`, {
     method: 'POST',
   });
   const { id } = await response.json();
   const fullUrl = `${document.location.origin}/shared/${id}`;
-  document.cookie = `shareUrl=${fullUrl}`;
   return fullUrl;
 }
 
