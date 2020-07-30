@@ -9,6 +9,6 @@ app.use(cors())
   .use(cookieParser())
   .use('/', routes);
 
-const { PORT } = process.env;
+const { PORT } = process.env || 8000;
 console.log(`Listening on ${PORT}`);
-app.listen(process.env.PORT || 8000);
+app.listen(PORT);

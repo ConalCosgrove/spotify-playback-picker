@@ -140,3 +140,29 @@ body {
 #errorTextHolder {
   color: red;
 }
+
+.queueItem {
+  border: 2px solid #b8b8b8;
+  display: flex;
+  flex-direction: row;
+  max-width: inherit;
+}
+
+.queueItemArtworkImage {
+  margin: 20px;
+}
+
+.queueButton {
+  margin: 20px;
+}
+
+.queueItemInfoHolder {
+  flex-grow: 1;
+}
+
+#queueSearchTextBox {
+  width: 100%;
+  width: -moz-available;          /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+}

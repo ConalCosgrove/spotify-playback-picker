@@ -8,6 +8,7 @@
 </head>
 <body>
   <div id="profile">
+    <button class="deviceHolder" id="sharableLinkButton">Click for shareable link!</button>
     <div id="playerPanel">
       <div id="devices"></div>
       <div id="nowPlaying"></div>
@@ -19,11 +20,16 @@
       <div id="volumeSliderHolder">
         <input id="volumeSlider" type="range" min="1" max="100">
       </div>
+      <div id="queueHolder">
+        <h3>Add a song to the queue:</h3>
+        <input id="queueSearchTextBox" type="text"></input>
+        <div id="songList">
+        </div>
+      </div>
     </div>
   </div>
-  <script type="text/javascript" src="/index.js"> 
-    
-  </script>
+  <script type="text/javascript" src="queue.js"></script>
+  <script type="text/javascript" src="/index.js"></script>
 </body>
 
 </html>

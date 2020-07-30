@@ -1,4 +1,3 @@
-
 const params = (new URL(document.location)).searchParams;
 let accessToken = params.get('accessToken');
 let refreshToken = params.get('refreshToken');
@@ -9,6 +8,8 @@ const changeDeviceXhr = new XMLHttpRequest();
 const getNowPlayingXhr = new XMLHttpRequest();
 const getTimeXhr = new XMLHttpRequest();
 const stateRequest = new XMLHttpRequest();
+let devices = [];
+let activeDeviceName = '';
 
 function getCookie(cname) {
   const name = `${cname}=`;
@@ -24,6 +25,21 @@ function getCookie(cname) {
     }
   }
   return '';
+}
+
+async function getShareLink() {
+  const cookie = getCookie('shareUrl');
+  if (cookie) {
+    console.log('cookie!');
+    return cookie;
+  }
+  const response = await fetch(`/shareurl?accessToken=${accessToken}&refreshToken=${refreshToken}`, {
+    method: 'POST',
+  });
+  const { id } = await response.json();
+  const fullUrl = `${document.location.origin}/shared/${id}`;
+  document.cookie = `shareUrl=${fullUrl}`;
+  return fullUrl;
 }
 
 function changeDevice(id) {
@@ -71,6 +87,7 @@ let last = 0;
 
 function buildDevices(data) {
   document.getElementById('devices').innerHTML = '';
+  devices = data;
   for (let i = 0; i < data.length; i += 1) {
     const newDeviceDiv = document.createElement('div');
     const newDeviceText = document.createElement('p');
@@ -86,9 +103,27 @@ function buildDevices(data) {
   }
 }
 
+function switchHighlightedDevice(name) {
+  let found = false;
+  devices.forEach((device) => {
+    if (device.name === name) {
+      device.is_active = true;
+      found = true;
+    } else {
+      device.is_active = false;
+    }
+  });
+  if (!found) {
+    devices.push({ name, is_active: true });
+  }
+  activeDeviceName = name;
+  buildDevices(devices);
+}
+
 function buildControls() {
   const prev = document.getElementById('prev');
   const next = document.getElementById('next');
+  const search = document.getElementById('queueSearchTextBox');
   const volumeSlider = document.getElementById('volumeSlider');
   // const playPause = document.getElementById('playPause');
   next.onclick = () => {
@@ -107,6 +142,19 @@ function buildControls() {
     stateRequest.setRequestHeader('Authorization', `Bearer ${accessToken}`);
     stateRequest.send();
   };
+
+  search.onkeypress = async (e) => {
+    const searchString = e.target.value;
+    if (searchString.length < 2) return;
+    const tracks = await fetch(`https://api.spotify.com/v1/search?q=${encodeURI(searchString)}&type=track&limit=5`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const parsed = await tracks.json();
+    drawQueue(parsed.tracks.items);
+    parsed.tracks.items.forEach((track) => console.log(`${track.artists[0].name}: ${track.name}`));
+  };
 }
 
 function clearError() {
@@ -120,6 +168,15 @@ function calculateWidth(songData) {
   const length = songData.item.duration_ms;
 
   return Math.floor(100 * (currentTime / length));
+}
+
+function setUpLinkSharingButton() {
+  const sharableLinkButton = document.getElementById('sharableLinkButton');
+  sharableLinkButton.onclick = async () => {
+    const link = await getShareLink();
+    navigator.clipboard.writeText(link);
+    sharableLinkButton.textContent = 'Link copied to clipboard!';
+  };
 }
 
 function buildNowPlaying(data) {
@@ -145,6 +202,7 @@ function buildNowPlaying(data) {
 }
 
 function setTime(data) {
+  if (data.device.name !== activeDeviceName) switchHighlightedDevice(data.device.name);
   const volumeSlider = document.getElementById('volumeSlider');
   volumeSlider.value = data.device.volume_percent;
   if (data.progress_ms < last) {
@@ -230,5 +288,5 @@ stateRequest.onload = () => {
 getDevices();
 buildControls();
 getNowPlaying();
-
+setUpLinkSharingButton();
 setInterval(getTime, 1000);
