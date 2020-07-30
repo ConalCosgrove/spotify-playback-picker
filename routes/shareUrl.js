@@ -19,6 +19,7 @@ const saveTokens = (accessToken, refreshToken) => {
     fs.writeFile(filePath, Buffer.from(JSON.stringify(map)), () => {});
     return id;
   } catch (err) {
+    console.log(err);
     return err;
   }
 };
