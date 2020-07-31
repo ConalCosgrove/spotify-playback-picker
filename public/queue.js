@@ -65,11 +65,11 @@ function buildSongElement(song) {
 }
 
 function drawQueue(songs) {
-  const { holder, searchBox, songList } = getQueueElements();
-  console.log(songs);
+  const { songList } = getQueueElements();
   const songsInfo = songs.map((song) => ({
     title: song.name, artist: song.artists[0].name, album: song.album.name, id: song.id, artwork: song.album.images[2].url,
   }));
   songList.innerHTML = '';
+  songsInfo.reverse();
   songsInfo.forEach((song) => songList.appendChild(buildSongElement(song)));
 }
