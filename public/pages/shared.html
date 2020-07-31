@@ -3,10 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
-  <script src="/shared.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+  <title>Player Picker</title>
 </head>
 <body>
-  
+  <div id="profile">
+    <button class="deviceHolder" id="sharableLinkButton">Click for shareable link!</button>
+    <div id="playerPanel">
+      <div id="nowPlaying"></div>
+      </div>
+
+      <div id="queueHolder">
+        <h3>Add a song to the queue:</h3>
+        <input id="queueSearchTextBox" type="text"></input>
+        <div id="songList">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type ="text/javascript" src="/shared.js"></script>
+  <script type="text/javascript" src="/queue.js"></script>
 </body>
+
 </html>

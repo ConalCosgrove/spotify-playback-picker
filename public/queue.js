@@ -22,8 +22,9 @@ async function queueSong(id) {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  await post.json();
-  clearSearch();
+  if (post.status === 204) {
+    clearSearch();
+  }
 }
 
 function buildSongElement(song) {
