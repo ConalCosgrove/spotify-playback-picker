@@ -184,7 +184,9 @@ function buildNowPlaying(data) {
   timeDisplay.style.width = `${calculateWidth(data)}%`;
   const title = document.createElement('h3');
   title.innerHTML = data.item.name;
+  title.id = 'songTitleText';
   const artist = document.createElement('h4');
+  artist.id = 'songArtistText';
   artist.innerHTML = `${data.item.artists[0].name} - ${data.item.album.name}`;
   artwork.src = data.item.album.images[1].url;
   artwork.id = 'artwork';

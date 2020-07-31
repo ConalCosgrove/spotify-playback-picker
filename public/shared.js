@@ -51,9 +51,9 @@ function getTime() {
 
 function setUpSearch() {
   const search = document.getElementById('queueSearchTextBox');
-  search.onkeypress = async (e) => {
+  search.onkeydown = async (e) => {
     const searchString = e.target.value;
-    if (searchString.length < 2) return;
+    if (searchString.length < 2) return drawQueue([]);
     const tracks = await fetch(`https://api.spotify.com/v1/search?q=${encodeURI(searchString)}&type=track&limit=5`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -91,9 +91,11 @@ function buildNowPlaying(data) {
   timeDisplay.id = 'time';
   timeDisplay.style.width = `${calculateWidth(data)}%`;
   const title = document.createElement('h3');
+  title.id = 'songTitleText';
   title.innerHTML = data.item.name;
   const artist = document.createElement('h4');
   artist.innerHTML = `${data.item.artists[0].name} - ${data.item.album.name}`;
+  artist.id = 'songArtistText';
   artwork.src = data.item.album.images[1].url;
   artwork.id = 'artwork';
   artHolder.appendChild(artwork);
