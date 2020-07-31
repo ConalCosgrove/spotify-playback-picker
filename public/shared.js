@@ -51,7 +51,7 @@ function getTime() {
 
 function setUpSearch() {
   const search = document.getElementById('queueSearchTextBox');
-  search.onkeydown = async (e) => {
+  search.onkeyup = async (e) => {
     const searchString = e.target.value;
     if (searchString.length < 2) return drawQueue([]);
     const tracks = await fetch(`https://api.spotify.com/v1/search?q=${encodeURI(searchString)}&type=track&limit=5`, {
@@ -60,7 +60,7 @@ function setUpSearch() {
       },
     });
     const parsed = await tracks.json();
-    drawQueue(parsed.tracks.items);
+    if (searchString.length >= search.value.length) return drawQueue(parsed.tracks.items);
   };
 }
 
@@ -83,9 +83,10 @@ function setUpLinkSharingButton() {
 
 function buildNowPlaying(data) {
   const nowPlayingHolder = document.getElementById('nowPlaying');
-  nowPlayingHolder.innerHTML = '';
-  const artHolder = document.createElement('div');
-  artHolder.id = 'artworkHolder';
+  const artworkHolder = document.getElementById('artworkHolder');
+  const songTextHolder = document.getElementById('songText');
+  artworkHolder.innerHTML = '';
+  songTextHolder.innerHTML = '';
   const artwork = document.createElement('img');
   const timeDisplay = document.createElement('div');
   timeDisplay.id = 'time';
@@ -96,13 +97,17 @@ function buildNowPlaying(data) {
   const artist = document.createElement('h4');
   artist.innerHTML = `${data.item.artists[0].name} - ${data.item.album.name}`;
   artist.id = 'songArtistText';
+
+  songTextHolder.appendChild(title);
+  songTextHolder.appendChild(artist);
+
   artwork.src = data.item.album.images[1].url;
   artwork.id = 'artwork';
-  artHolder.appendChild(artwork);
-  artHolder.appendChild(timeDisplay);
-  nowPlayingHolder.appendChild(artHolder);
-  nowPlayingHolder.appendChild(title);
-  nowPlayingHolder.appendChild(artist);
+  artworkHolder.appendChild(artwork);
+  artworkHolder.appendChild(timeDisplay);
+
+  nowPlayingHolder.appendChild(artworkHolder);
+  nowPlayingHolder.appendChild(songTextHolder);
 }
 
 function setTime(data) {

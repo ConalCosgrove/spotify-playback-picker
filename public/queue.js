@@ -58,7 +58,7 @@ function buildSongElement(song) {
 
   const queueButton = document.createElement('button');
   queueButton.className = 'queueButton';
-  queueButton.textContent = 'Add to queue';
+  queueButton.textContent = '+';
   holderDiv.appendChild(queueButton);
   queueButton.onclick = () => queueSong(id);
   return holderDiv;

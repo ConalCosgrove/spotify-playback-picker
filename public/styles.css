@@ -5,7 +5,9 @@
   padding-right: 10px;
   text-align: center;
   cursor: pointer;
+  border: none;
   margin: 10px;
+  color: whitesmoke;
 }
 
 #deviceHolder {
@@ -45,6 +47,10 @@ box-shadow: -9px 10px 5px -5px rgba(0,0,0,0.75);
   flex-direction: column;
   align-items: center;
   padding:10px;
+}
+
+#songText {
+  max-width: fit-content;
 }
 
 #login {
@@ -165,8 +171,12 @@ body {
 }
 
 #songList {
+  max-width: -moz-min-content;
   max-width: fit-content;
-  min-width: -webkit-fill-available;
+  width: 100%;
+  min-width: -moz-available;          /* WebKit-based browsers will ignore this. */
+  min-width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  min-width: fill-available;
 }
 
 .queueItem {
@@ -181,6 +191,13 @@ body {
 
 .queueButton {
   margin: 20px;
+  align-self: center;
+  height: fit-content;
+  align-self: center;
+  font-size: x-large;
+  background-color:rgb(185, 29, 29);
+  border: none;
+  color: white;
 }
 
 .queueItemInfoHolder {
