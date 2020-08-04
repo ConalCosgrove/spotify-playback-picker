@@ -1,6 +1,7 @@
 const params = (new URL(document.location)).searchParams;
 let accessToken = params.get('accessToken');
 let refreshToken = params.get('refreshToken');
+let isPlaying = true;
 // Set up our HTTP request
 const xhr = new XMLHttpRequest();
 const refreshXhr = new XMLHttpRequest();
@@ -119,7 +120,20 @@ function buildControls() {
   const next = document.getElementById('next');
   const search = document.getElementById('queueSearchTextBox');
   const volumeSlider = document.getElementById('volumeSlider');
-  // const playPause = document.getElementById('playPause');
+  const playPause = document.getElementById('playPause');
+
+  playPause.onclick = async () => {
+    const playOrPause = isPlaying ? 'pause' : 'play';
+    const res = await fetch(`https://api.spotify.com/v1/me/player/${playOrPause}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (res.ok) {
+      isPlaying = !isPlaying;
+    }
+  };
   next.onclick = () => {
     stateRequest.open('POST', 'https://api.spotify.com/v1/me/player/next');
     stateRequest.setRequestHeader('Authorization', `Bearer ${accessToken}`);
@@ -263,7 +277,9 @@ getNowPlayingXhr.onload = () => {
 getTimeXhr.onload = () => {
   if (getTimeXhr.status >= 200 && getTimeXhr.status < 300) {
     if (getTimeXhr.response) {
+      const parsed = JSON.parse(getTimeXhr.response);
       setTime(JSON.parse(getTimeXhr.response));
+      isPlaying = parsed.is_playing;
     }
   } else {
     // This will run when it's not
