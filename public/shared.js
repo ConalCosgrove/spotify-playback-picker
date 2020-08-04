@@ -125,6 +125,14 @@ function setTime(data) {
   }
 }
 
+refreshXhr.onload = () => {
+  if (refreshXhr.status >= 200 && refreshXhr.status < 300) {
+    accessToken = JSON.parse(refreshXhr.response).accessToken;
+  } else {
+    window.location.replace('/login');
+  }
+};
+
 getNowPlayingXhr.onload = () => {
   if (getNowPlayingXhr.status >= 200 && getNowPlayingXhr.status < 300) {
     if (getNowPlayingXhr.response) {
