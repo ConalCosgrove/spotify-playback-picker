@@ -172,6 +172,8 @@ body {
   appearance: none;
   background:rgb(185, 29, 29);
   height: 5px;
+  width: 100%;
+  width: -moz-available;
   width: -webkit-fill-available;
 }
 
