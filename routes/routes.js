@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 router.get('/changeDevice', use(changeDevice));
 router.get('/login', use(login));
 router.get('/profile', use(profile));
-router.get('/refresh_token', use(refreshAccessToken));
+router.get('/refresh-token', use(refreshAccessToken));
 router.get('/spotify-callback', use(spotifyCallback));
 router.get('/shared/:id', use(shared));
 router.get('/error', use(error));

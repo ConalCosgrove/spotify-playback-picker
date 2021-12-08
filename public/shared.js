@@ -33,7 +33,7 @@ async function getShareLink() {
 }
 
 function refreshAccessToken() {
-  refreshXhr.open('GET', `/refreshToken?refreshToken=${refreshToken}`);
+  refreshXhr.open('GET', `/refresh-token?refreshToken=${refreshToken}`);
   refreshXhr.send();
 }
 
@@ -162,8 +162,6 @@ async function getTokens(id) {
   } catch(error) {
     window.location.replace('/error');
   }
-  
-  
 }
 
 
