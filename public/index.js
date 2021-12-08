@@ -180,6 +180,8 @@ function calculateWidth(songData) {
 
 function copyLinkToClipboard() {
   navigator.clipboard.writeText(link);
+  const sharableLinkButton = document.getElementById('sharableLinkButton');
+  sharableLinkButton.textContent = 'Link copied to clipboard!';
 }
 
 async function setUpLinkSharingButton() {
