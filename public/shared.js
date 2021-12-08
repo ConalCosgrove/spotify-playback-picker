@@ -129,7 +129,7 @@ refreshXhr.onload = () => {
   if (refreshXhr.status >= 200 && refreshXhr.status < 300) {
     accessToken = JSON.parse(refreshXhr.response).accessToken;
   } else {
-    window.location.replace('/login');
+    window.location.replace('/error');
   }
 };
 
