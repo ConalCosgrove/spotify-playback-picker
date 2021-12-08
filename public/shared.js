@@ -155,8 +155,14 @@ getTimeXhr.onload = () => {
 
 async function getTokens(id) {
   const tokens = await fetch(`/tokens/${id}`);
-  const parsed = await tokens.json();
-  return parsed;
+  try {
+    const parsed = await tokens.json();
+    return parsed;
+  } catch(error) {
+    window.location.replace('/error');
+  }
+  
+  
 }
 
 
