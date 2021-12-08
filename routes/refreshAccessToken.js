@@ -22,6 +22,7 @@ const refreshAccessToken = (req, res) => {
         accessToken,
       });
     } else {
+      console.log('Failed to refresh access token, error:', error);
       res.status(400).send('Failed');
     }
   });
