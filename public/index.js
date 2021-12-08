@@ -185,10 +185,8 @@ function copyLinkToClipboard() {
 async function setUpLinkSharingButton() {
   const sharableLinkButton = document.getElementById('sharableLinkButton');
   link = await getShareLink(); 
-  sharableLinkButton.onclick = copyLinkToClipboard();
+  sharableLinkButton.onclick = copyLinkToClipboard;
 }
-
-
 
 function buildNowPlaying(data) {
   const nowPlayingHolder = document.getElementById('nowPlaying');
