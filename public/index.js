@@ -2,6 +2,7 @@ const params = (new URL(document.location)).searchParams;
 let accessToken = params.get('accessToken');
 let refreshToken = params.get('refreshToken');
 let isPlaying = true;
+let link = '';
 // Set up our HTTP request
 const xhr = new XMLHttpRequest();
 const refreshXhr = new XMLHttpRequest();
@@ -177,14 +178,17 @@ function calculateWidth(songData) {
   return Math.floor(100 * (currentTime / length));
 }
 
-function setUpLinkSharingButton() {
-  const sharableLinkButton = document.getElementById('sharableLinkButton');
-  sharableLinkButton.onclick = async () => {
-    const link = await getShareLink();
-    navigator.clipboard.writeText(link);
-    sharableLinkButton.textContent = 'Link copied to clipboard!';
-  };
+function copyLinkToClipboard() {
+  navigator.clipboard.textContent(link);
 }
+
+async function setUpLinkSharingButton() {
+  const sharableLinkButton = document.getElementById('sharableLinkButton');
+  link = await getShareLink(); 
+  sharableLinkButton.onclick = copyLinkToClipboard();
+}
+
+
 
 function buildNowPlaying(data) {
   const nowPlayingHolder = document.getElementById('nowPlaying');
