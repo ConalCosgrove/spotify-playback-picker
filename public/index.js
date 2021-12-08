@@ -179,7 +179,7 @@ function calculateWidth(songData) {
 }
 
 function copyLinkToClipboard() {
-  navigator.clipboard.textContent(link);
+  navigator.clipboard.writeText(link);
 }
 
 async function setUpLinkSharingButton() {
