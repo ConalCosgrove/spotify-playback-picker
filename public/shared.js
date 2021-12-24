@@ -130,7 +130,7 @@ function setTime(data) {
 
 refreshXhr.onload = () => {
   if (refreshXhr.status >= 200 && refreshXhr.status < 300) {
-    accessToken = JSON.parse(refreshXhr.response).accessToken;
+    accessToken = JSON.parse(refreshXhr.response).access_token;
   } else {
     console.log(refreshXhr.responseText)
     window.location.replace('/error');

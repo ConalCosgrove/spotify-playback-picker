@@ -3,9 +3,9 @@ const fs = require('fs');
 const path = require('path');
 
 const generateId = () => crypto.randomBytes(8).toString('hex');
+const filePath = path.join(__dirname, '../data/database.json');
 
 const saveTokens = (accessToken, refreshToken) => {
-  const filePath = path.join(__dirname, '../data/database.json');
   const id = generateId();
 
   try {
@@ -23,6 +23,9 @@ const saveTokens = (accessToken, refreshToken) => {
     return err;
   }
 };
+
+
+    
 
 const shareUrl = async (req, res) => {
   try {
